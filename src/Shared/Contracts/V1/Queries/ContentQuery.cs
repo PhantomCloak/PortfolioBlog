@@ -2,8 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Shared.Contracts.V1.Queries
 {
-    public class EntryQuery
+    public class ContentQuery
     {
-        public string? ContentName { get; set; }
+        [Required]
+        public string ContentName { get; set; }
     }
 }

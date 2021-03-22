@@ -3,15 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Shared.Contracts.V1.Commands
 {
-    public class EntryCommand
+    public class ContentCommand
     {
         [Required]
-        public string CategoryName { get; set; }
-        [Required]
-        public string PostName { get; set; }
-        [Required]
-        public string Content { get; set; }
-        [Required]
-        public IEnumerable<string> Categories { get; set; }
+        [StringLength(maximumLength:32,ErrorMessage = "Content Name cannot be longer than 32 characters or shorter than 3 characters.",MinimumLength = 3)]
+        public string ContentName { get; set; }
+        public Dictionary<string,string> ContentFields { get; set; }
     }
 }

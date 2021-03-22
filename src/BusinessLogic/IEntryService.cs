@@ -1,15 +1,16 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Shared.Contracts.V1.Commands;
+using Shared.Contracts.V1.Queries;
 using Shared.DTOs;
 
 namespace BusinessLogic
 {
     public interface IEntryService
     {
-        Task<IEnumerable<EntryDto>> GetAllBrandsAsync();
-        Task<EntryDto> GetBrandAsync(string brandName);
-        Task<EntryDto> CreateEntryAsync(EntryCommand createBrandParams);
-        Task<bool> DeleteEntryAsync(string brandName);
+        Task<IEnumerable<EntryDto>> GetAllEntriesAsync();
+        Task<EntryDto> GetEntryAsync(EntryQuery entryQuery);
+        Task<EntryDto> CreateEntryAsync(EntryCommand entryCommand);
+        Task<bool> DeleteEntryAsync(EntryQuery entryQuery);
     }
 }

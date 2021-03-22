@@ -1,9 +1,7 @@
 using System.Collections.Generic;
-using System.Data;
-using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
-using DataAccess;
+using DataAccess.Repositories;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Shared.Contracts.V1.Commands;
@@ -29,7 +27,7 @@ namespace BusinessLogic.Services
         public async Task<IEnumerable<ContentDto>> GetAllContentAsync()
         {
             var contents = await _contentRepository.GetAllContentsAsync();
-            
+
             return _mapper.Map<IEnumerable<ContentDto>>(contents);
         }
 
@@ -48,11 +46,7 @@ namespace BusinessLogic.Services
 
         public async Task<ContentDto> CreateContentAsync(ContentCommand contentCommand)
         {
-            var contentToCreate = new Content
-            {
-                ContentName = contentCommand.ContentName,
-                ContentFields = contentCommand.ContentFields
-            };
+            var contentToCreate = _mapper.Map<Content>(contentCommand);
 
             var createResult = await _contentRepository.CreateContentAsync(contentToCreate);
 
@@ -63,6 +57,21 @@ namespace BusinessLogic.Services
             }
 
             return _mapper.Map<ContentDto>(contentToCreate);
+        }
+
+        public async Task<bool> UpdateContentAsync(ContentDto contentDto)
+        {
+            var content = _mapper.Map<Content>(contentDto);
+
+            var updateResult = await _contentRepository.UpdateContentAsync(content);
+
+            if (!updateResult)
+            {
+                _logger.LogError($"Content {contentDto.ContentName} failed to update.");
+                return false;
+            }
+
+            return true;
         }
 
         public async Task<bool> DeleteContentAsync(ContentQuery contentQuery)

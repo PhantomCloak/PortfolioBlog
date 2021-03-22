@@ -11,6 +11,7 @@ namespace BusinessLogic.Services
         Task<IEnumerable<ContentDto>> GetAllContentAsync();
         Task<ContentDto> GetContentAsync(ContentQuery contentQuery);
         Task<ContentDto> CreateContentAsync(ContentCommand contentCommand);
+        Task<bool> UpdateContentAsync(ContentDto contentDto);
         Task<bool> DeleteContentAsync(ContentQuery contentQuery);
     }
 }

@@ -14,7 +14,7 @@ namespace BusinessLogic.Services
         
         public Uri GetContentUri(string key)
         {
-            return new Uri(_baseUri + ApiRoutes.Entry.Get.Replace("{contentKey}", key));
+            return new Uri(_baseUri + ApiRoutes.Content.Get.Replace("{contentKey}", key));
         }
 
     }

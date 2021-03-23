@@ -6,7 +6,7 @@ namespace Shared.Contracts.V1.Routes
 
         private const string Base = Root + "/";
 
-        public static class Entry
+        public static class Content
         {
             private const string Version = "v1";
 

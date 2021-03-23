@@ -10,40 +10,40 @@ using Shared.DTOs;
 namespace Presentation.Controllers.V1
 {
     [ApiController]
-    public class EntryController : ControllerBase
+    public class ContentController : ControllerBase
     {
         private readonly IContentService _contentService;
         private readonly IUriService _uriService;
 
-        public EntryController(IContentService contentService, IUriService uriService)
+        public ContentController(IContentService contentService, IUriService uriService)
         {
             _contentService = contentService;
             _uriService = uriService;
         }
         
-        [HttpGet(ApiRoutes.Entry.GetAll)]
-        public async Task<IActionResult> GetEntries()
+        [HttpGet(ApiRoutes.Content.GetAll)]
+        public async Task<IActionResult> GetContents()
         {
-            var entries = await _contentService.GetAllContentAsync();
+            var contents = await _contentService.GetAllContentAsync();
 
-            if (!entries.Any())
+            if (!contents.Any())
             {
                 return NoContent();
             }
             
-            return Ok(entries);
+            return Ok(contents);
         }
         
-        [HttpGet(ApiRoutes.Entry.Get)]
-        public async Task<IActionResult> GetEntry(string contentKey)
+        [HttpGet(ApiRoutes.Content.Get)]
+        public async Task<IActionResult> GetContent(string contentKey)
         {
             var content = await _contentService.GetContentAsync(new ContentQuery{ContentName = contentKey});
             
             return Ok(content);
         }
 
-        [HttpPost(ApiRoutes.Entry.Create)]
-        public async Task<IActionResult> CreateEntry([FromBody]ContentCommand command)
+        [HttpPost(ApiRoutes.Content.Create)]
+        public async Task<IActionResult> CreateContent([FromBody]ContentCommand command)
         {
             var existingContent = await _contentService.GetContentAsync(new ContentQuery {ContentName = command.ContentName});
 
@@ -52,19 +52,19 @@ namespace Presentation.Controllers.V1
                 return BadRequest("There is already a content with a same key");
             }
 
-            var createdObject = await _contentService.CreateContentAsync(command);
+            var createdContent = await _contentService.CreateContentAsync(command);
             
-            if (createdObject == null)
+            if (createdContent == null)
             {
                 return BadRequest("Resource failed to create.");
             }
 
-            var uri = _uriService.GetContentUri(createdObject.ContentName);
-            return Created(uri, createdObject);
+            var resourceUri = _uriService.GetContentUri(createdContent.ContentName);
+            return Created(resourceUri, createdContent);
         }
 
-        [HttpPut(ApiRoutes.Entry.Update)]
-        public async Task<IActionResult> UpdateEntry([FromBody]ContentDto contentToUpdate)
+        [HttpPut(ApiRoutes.Content.Update)]
+        public async Task<IActionResult> UpdateContent([FromBody]ContentDto contentToUpdate)
         {
             var existingContent = await _contentService.GetContentAsync(new ContentQuery {ContentName = contentToUpdate.ContentName});
 
@@ -83,8 +83,8 @@ namespace Presentation.Controllers.V1
             return Ok();
         }
 
-        [HttpDelete(ApiRoutes.Entry.Delete)]
-        public async Task<IActionResult> DeleteEntry(string contentKey)
+        [HttpDelete(ApiRoutes.Content.Delete)]
+        public async Task<IActionResult> DeleteContent(string contentKey)
         {
             var existingContent = await _contentService.GetContentAsync(new ContentQuery {ContentName = contentKey});
 

@@ -13,5 +13,6 @@ namespace BusinessLogic.Services
         Task<ContentDto> CreateContentAsync(ContentCommand contentCommand);
         Task<bool> UpdateContentAsync(ContentDto contentDto);
         Task<bool> DeleteContentAsync(ContentQuery contentQuery);
+        Task<bool> ContentExistAsync(string contentKey);
     }
 }

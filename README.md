@@ -1,5 +1,5 @@
 # PortfolioBlog
-It allows us to create content types and their fields dynamically.
+Home task that demonstrate dynamic content management.
 
 ## Prerequisites
 
@@ -12,20 +12,19 @@ Microsoft SQL Server Version 15.0.4083.2 (X64)
 ```
 cd /src
 dotnet build
-cd Presentation
-dotnet run 
+dotnet run --project Presentation 
 ```
-After running solution database connection string must be set in the `appconfig.json` file (create manually if don't exist) by default user name is SA and password is Badf00d11 after doing these steps scaffold `tabble.sql` in the `src` folder or simply run directly.
+After running the solution database connection string must be set in the `appconfig.json` file (create manually if don't exist) by default user name is SA and password is Badf00d11 after doing these steps scaffold `tabble.sql` in the `src` folder or simply run directly.
 
 ## Documentation
-Application contains swagger after launching the application it can be found in `/swagger` or better check http://efurni.phantom-dev.com:22003/swagger (not operational reason is in the end of the page
+Application contains swagger, after launching the application it can be found in `/swagger` path or better check http://efurni.phantom-dev.com:22003/swagger (Not operational explaination in the end of the page)
 
 ### List all contents
 Get request to the`/api/v1/content` endpoint.
 
 Returns: 
 
-200 - OK along with contents
+200 - OK along with the contents
 
 204 - NoContent If there is a no content
 
@@ -100,3 +99,4 @@ Before the executing tests make sure `appsettings.json` is in the corresponding 
 
 # Why example web site is not working?
 MS-SQL requires minimum 2 gig of ram to run and current machine that I have has only 1 gig of ram so in the end MS-SQL was too heavy to lift for my cloud instance but it should work with operational database.  
+

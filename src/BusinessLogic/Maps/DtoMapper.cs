@@ -21,6 +21,9 @@ namespace BusinessLogic.Maps
                 .ForMember(dest => dest.ContentName, opt => opt.MapFrom(src => src.ContentName))
                 .ForMember(dest => dest.ContentFields, opt => opt.MapFrom(src => src.ContentFields));
 
+            CreateMap<Content,ContentCommand>()
+                .ForMember(dest => dest.ContentName, opt => opt.MapFrom(src => src.ContentName))
+                .ForMember(dest => dest.ContentFields, opt => opt.MapFrom(src => src.ContentFields));
         }
     }
 }

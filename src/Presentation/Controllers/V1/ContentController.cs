@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using BusinessLogic.Services;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Contracts.V1.Commands;
@@ -14,13 +15,20 @@ namespace Presentation.Controllers.V1
     {
         private readonly IContentService _contentService;
         private readonly IUriService _uriService;
+        private readonly bool _initializedFirstRunTask;
 
-        public ContentController(IContentService contentService, IUriService uriService)
+        public ContentController(IContentService contentService, IUriService uriService, IMapper mapper)
         {
             _contentService = contentService;
             _uriService = uriService;
+
+            if (!_initializedFirstRunTask)
+            {
+                new StartupTasks(contentService, mapper).GenerateTaskContents();
+                _initializedFirstRunTask = true;
+            }
         }
-        
+
         [HttpGet(ApiRoutes.Content.GetAll)]
         public async Task<IActionResult> GetContents()
         {
@@ -30,30 +38,30 @@ namespace Presentation.Controllers.V1
             {
                 return NoContent();
             }
-            
+
             return Ok(contents);
         }
-        
+
         [HttpGet(ApiRoutes.Content.Get)]
         public async Task<IActionResult> GetContent(string contentKey)
         {
-            var content = await _contentService.GetContentAsync(new ContentQuery{ContentName = contentKey});
-            
+            var content = await _contentService.GetContentAsync(new ContentQuery {ContentName = contentKey});
+
             return Ok(content);
         }
 
         [HttpPost(ApiRoutes.Content.Create)]
-        public async Task<IActionResult> CreateContent([FromBody]ContentCommand command)
+        public async Task<IActionResult> CreateContent([FromBody] ContentCommand command)
         {
-            var existingContent = await _contentService.GetContentAsync(new ContentQuery {ContentName = command.ContentName});
+            var existingContent = await _contentService.ContentExistAsync(command.ContentName);
 
-            if (existingContent != null)
+            if (existingContent == false)
             {
                 return BadRequest("There is already a content with a same key");
             }
 
             var createdContent = await _contentService.CreateContentAsync(command);
-            
+
             if (createdContent == null)
             {
                 return BadRequest("Resource failed to create.");
@@ -64,15 +72,15 @@ namespace Presentation.Controllers.V1
         }
 
         [HttpPut(ApiRoutes.Content.Update)]
-        public async Task<IActionResult> UpdateContent([FromBody]ContentDto contentToUpdate)
+        public async Task<IActionResult> UpdateContent([FromBody] ContentDto contentToUpdate)
         {
-            var existingContent = await _contentService.GetContentAsync(new ContentQuery {ContentName = contentToUpdate.ContentName});
+            var existingContent = await _contentService.ContentExistAsync(contentToUpdate.ContentName);
 
-            if (existingContent == null)
+            if (existingContent == false)
             {
                 return NotFound("Requested resource not found.");
             }
-            
+
             var updateResult = await _contentService.UpdateContentAsync(contentToUpdate);
 
             if (!updateResult)
@@ -86,14 +94,14 @@ namespace Presentation.Controllers.V1
         [HttpDelete(ApiRoutes.Content.Delete)]
         public async Task<IActionResult> DeleteContent(string contentKey)
         {
-            var existingContent = await _contentService.GetContentAsync(new ContentQuery {ContentName = contentKey});
+            var existingContent = await _contentService.ContentExistAsync(contentKey);
 
-            if (existingContent == null)
+            if (existingContent == false)
             {
                 return NotFound("Requested resource not found.");
             }
-            
-            var deletionResult = await _contentService.DeleteContentAsync(new ContentQuery{ContentName = existingContent.ContentName});
+
+            var deletionResult = await _contentService.DeleteContentAsync(new ContentQuery {ContentName = contentKey});
 
             if (!deletionResult)
             {
@@ -102,6 +110,5 @@ namespace Presentation.Controllers.V1
 
             return Ok();
         }
-        
     }
 }

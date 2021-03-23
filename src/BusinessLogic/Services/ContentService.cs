@@ -86,5 +86,12 @@ namespace BusinessLogic.Services
 
             return true;
         }
+
+        public async Task<bool> ContentExistAsync(string contentKey)
+        {
+            var existingContent = await _contentRepository.GetContentByKeyAsync(contentKey);
+
+            return existingContent != null;
+        }
     }
 }

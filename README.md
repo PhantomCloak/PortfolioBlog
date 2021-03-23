@@ -15,8 +15,7 @@ dotnet build
 cd Presentation
 dotnet run 
 ```
-After running solution database user must be set in the `appconfig.json` (create manually if don't exist) by default user name is SA and password is Badf00d11
-and after settiling up database config project is ready to go/
+After running solution database connection string must be set in the `appconfig.json` file (create manually if don't exist) by default user name is SA and password is Badf00d11 after doing these steps scaffold `tabble.sql` in the `src` folder or simply run directly.
 
 ## Documentation
 Application contains swagger after launching the application it can be found in `/swagger` or better check http://efurni.phantom-dev.com:22003/swagger (not operational reason is in the end of the page

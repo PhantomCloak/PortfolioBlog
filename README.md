@@ -1,4 +1,5 @@
 # PortfolioBlog
+It allows us to create content types and their fields dynamically.
 
 ## Prerequisites
 
@@ -94,6 +95,9 @@ Returns:
 404 - NotFound if content not present in database
 
 400 - Badrequest if something fails e.g database or constraint check
+
+### Tests
+Before the executing tests make sure `appsettings.json` is in the corresponding directory.
 
 # Why example web site is not working?
 MS-SQL requires minimum 2 gig of ram to run and current machine that I have has only 1 gig of ram so in the end MS-SQL was too heavy to lift for my cloud instance but it should work with operational database.  

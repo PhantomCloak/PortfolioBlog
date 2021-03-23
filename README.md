@@ -3,6 +3,7 @@
 ## Prerequisites
 
 .NET SDK 3.1.108
+
 Microsoft SQL Server Version 15.0.4083.2 (X64)
 
 ## Build Instructions

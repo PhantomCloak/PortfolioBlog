@@ -55,14 +55,14 @@ namespace Presentation.Controllers.V1
         {
             var existingContent = await _contentService.ContentExistAsync(command.ContentName);
 
-            if (existingContent == false)
+            if (existingContent)
             {
                 return BadRequest("There is already a content with a same key");
             }
 
             var createdContent = await _contentService.CreateContentAsync(command);
 
-            if (createdContent == null)
+            if (createdContent)
             {
                 return BadRequest("Resource failed to create.");
             }
@@ -76,7 +76,7 @@ namespace Presentation.Controllers.V1
         {
             var existingContent = await _contentService.ContentExistAsync(contentToUpdate.ContentName);
 
-            if (existingContent == false)
+            if (existingContent)
             {
                 return NotFound("Requested resource not found.");
             }
@@ -96,7 +96,7 @@ namespace Presentation.Controllers.V1
         {
             var existingContent = await _contentService.ContentExistAsync(contentKey);
 
-            if (existingContent == false)
+            if (existingContent)
             {
                 return NotFound("Requested resource not found.");
             }

@@ -1,5 +1,5 @@
 # PortfolioBlog
-Home task that demonstrate dynamic content management.
+Home task that demonstrate dynamic content management. 
 
 ## Prerequisites
 
